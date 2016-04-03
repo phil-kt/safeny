@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import GoogleMaps
+import SwiftyJSON
 import Alamofire
 
 class InitialViewController: UIViewController, GMSAutocompleteViewControllerDelegate {
@@ -18,8 +19,8 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     var endLatitude: String?
     var endLongitude: String?
     var encodedPolyline: String?
-    var currentPlace: String?
-    var destinationPlace: String?
+    var currentPlace: GMSPlace?
+    var destinationPlace: GMSPlace?
     var lastTapped: String?
 
     @IBOutlet weak var currentView: UIView!
@@ -54,7 +55,7 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
             if let placeLikelihoods = placeLikelihoods {
                 print(placeLikelihoods.likelihoods)
                 self.currentLabel.text = placeLikelihoods.likelihoods[0].place.name
-                self.currentPlace = placeLikelihoods.likelihoods[0].place.name
+                self.currentPlace = placeLikelihoods.likelihoods[0].place
             }
         })
         
@@ -70,11 +71,11 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
         if (lastTapped == "current") {
             currentLabel.text = place.name
-            currentPlace = place.name
+            currentPlace = place
         }
         else {
             destinationLabel.text = place.name
-            destinationPlace = place.name
+            destinationPlace = place
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -108,14 +109,18 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     
     @IBAction func onGetThere(sender: AnyObject) {
         
-        let src = currentPlace!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
-        let dest = destinationPlace!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        let src = currentPlace!.name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        let dest = destinationPlace!.name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
         print(src)
         print(dest)
-        let url = "http://ec2-52-25-74-67.us-west-2.compute.amazonaws.com/getCoordinates?source=" + src! + "&destination=" + dest!
+        let url = "http://www.varunsayal.com:5000/getCoordinates?source=" + src! + "&destination=" + dest!
         Alamofire.request(.GET, url).response{ request, response, data, error in
             print(response)
-            print(error)
+            let json = JSON(data: data!)
+            print(json)
+            if let polyline = json["polyline"].string {
+                self.encodedPolyline = polyline
+            }
             self.performSegueWithIdentifier("mapSegue", sender: sender)
         }
     

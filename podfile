@@ -6,5 +6,6 @@ use_frameworks!
 target 'safeny' do
     pod 'GoogleMaps'
     pod 'Alamofire', '~> 2.0'
+    pod 'SwiftyJSON'
 end
 

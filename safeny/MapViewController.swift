@@ -38,6 +38,7 @@ class MapViewController: UIViewController {
         let path = GMSPath(fromEncodedPath: encodedPolyline)
         let polyline = GMSPolyline(path: path)
         polyline.strokeColor = UIColor( red: CGFloat(44/255.0), green: CGFloat(184/255.0), blue: CGFloat(56/255.0), alpha: CGFloat(1.0) )
+        polyline.strokeWidth = 4
         polyline.map = mapView
         
         let startMarker = GMSMarker()
