@@ -27,7 +27,7 @@ class MapViewController: UIViewController {
         }
     
         let camera = GMSCameraPosition.cameraWithLatitude(start.latitude,
-            longitude: start.longitude, zoom: 10)
+            longitude: start.longitude, zoom: 15)
         let mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         mapView.myLocationEnabled = true
         
@@ -37,16 +37,19 @@ class MapViewController: UIViewController {
 
         let path = GMSPath(fromEncodedPath: encodedPolyline)
         let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = UIColor( red: CGFloat(44/255.0), green: CGFloat(184/255.0), blue: CGFloat(56/255.0), alpha: CGFloat(1.0) )
         polyline.map = mapView
         
         let startMarker = GMSMarker()
         startMarker.position = start
         startMarker.title = "Start"
+        startMarker.icon = GMSMarker.markerImageWithColor(UIColor.whiteColor())
         startMarker.map = mapView
         
         let endMarker = GMSMarker()
         endMarker.position = end
         endMarker.title = "Destination"
+        endMarker.icon = GMSMarker.markerImageWithColor(UIColor.whiteColor())
         endMarker.map = mapView
     }
 

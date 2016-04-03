@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import GoogleMaps
+import Alamofire
 
 class InitialViewController: UIViewController, GMSAutocompleteViewControllerDelegate {
     
@@ -51,11 +52,9 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
             }
             
             if let placeLikelihoods = placeLikelihoods {
-                
                 print(placeLikelihoods.likelihoods)
-                
                 self.currentLabel.text = placeLikelihoods.likelihoods[0].place.name
-                
+                self.currentPlace = placeLikelihoods.likelihoods[0].place.name
             }
         })
         
@@ -71,9 +70,11 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
         if (lastTapped == "current") {
             currentLabel.text = place.name
+            currentPlace = place.name
         }
         else {
             destinationLabel.text = place.name
+            destinationPlace = place.name
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -106,7 +107,18 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     }
     
     @IBAction func onGetThere(sender: AnyObject) {
-        self.performSegueWithIdentifier("mapSegue", sender: sender)
+        
+        let src = currentPlace!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        let dest = destinationPlace!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        print(src)
+        print(dest)
+        let url = "http://ec2-52-25-74-67.us-west-2.compute.amazonaws.com/getCoordinates?source=" + src! + "&destination=" + dest!
+        Alamofire.request(.GET, url).response{ request, response, data, error in
+            print(response)
+            print(error)
+            self.performSegueWithIdentifier("mapSegue", sender: sender)
+        }
+    
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

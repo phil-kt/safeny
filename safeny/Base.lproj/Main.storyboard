@@ -113,13 +113,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="safeny" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p6W-0l-fB5">
-                                <rect key="frame" x="133" y="198" width="55" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="tower" translatesAutoresizingMaskIntoConstraints="NO" id="2gM-D7-aTt">
                                 <rect key="frame" x="108" y="83" width="105" height="107"/>
                                 <animations/>
@@ -128,6 +121,13 @@
                                     <constraint firstAttribute="width" constant="105" id="gNL-Ju-sPP"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="safeny" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p6W-0l-fB5">
+                                <rect key="frame" x="128" y="198" width="65" height="24"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.17254901960784313" green="0.72156862745098038" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
@@ -147,7 +147,9 @@
                             <constraint firstItem="h19-G7-Ac9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zc7-OX-pfm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="safeny" id="Tm8-ae-dW3"/>
+                    <navigationItem key="navigationItem" title="safeny" id="Tm8-ae-dW3">
+                        <barButtonItem key="backBarButtonItem" title="redo" id="LMO-sc-fWB"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="currentLabel" destination="jhD-eh-5Fg" id="pci-41-643"/>
                         <outlet property="currentView" destination="IXl-oD-8wq" id="9SC-hm-4NO"/>
@@ -192,7 +194,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.17254901960784313" green="0.65188116776315785" blue="0.22352941176470531" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
