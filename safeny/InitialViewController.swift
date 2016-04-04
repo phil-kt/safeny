@@ -28,6 +28,7 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
     @IBOutlet weak var destinationView: UIControl!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var directionsButton: UIControl!
+    @IBOutlet weak var directionsLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,12 +54,15 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
             }
             
             if let placeLikelihoods = placeLikelihoods {
-                print(placeLikelihoods.likelihoods)
                 self.currentLabel.text = placeLikelihoods.likelihoods[0].place.name
                 self.currentPlace = placeLikelihoods.likelihoods[0].place
             }
         })
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.directionsLabel.text = "get me there safely"
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,17 +115,52 @@ class InitialViewController: UIViewController, GMSAutocompleteViewControllerDele
         
         let src = currentPlace!.name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
         let dest = destinationPlace!.name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
-        print(src)
-        print(dest)
         let url = "http://www.varunsayal.com:5000/getCoordinates?source=" + src! + "&destination=" + dest!
-        Alamofire.request(.GET, url).response{ request, response, data, error in
-            print(response)
-            let json = JSON(data: data!)
-            print(json)
-            if let polyline = json["polyline"].string {
-                self.encodedPolyline = polyline
-            }
-            self.performSegueWithIdentifier("mapSegue", sender: sender)
+        Alamofire.request(.GET, url)
+            .validate()
+            .progress { bytesWritten, totalBytesWritten, totalBytesExpectedToWrite in
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.directionsButton.enabled = false
+                    UIView.performWithoutAnimation {
+                        self.directionsLabel.text = "working on it..."
+                    }
+                }
+                            }
+            .response{ request, response, data, error in
+                let json = JSON(data: data!)
+                if (json == nil) {
+                    let alertController = UIAlertController(title: "Bummer!", message:
+                        "Couldn't find a route! Might I suggest an Uber?", preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default,handler: nil))
+                    self.directionsLabel.text = "sorry :("
+                    self.presentViewController(alertController, animated: true, completion: nil)
+
+                }
+                else {
+                    if let polyline = json["polyline"].string {
+                        self.encodedPolyline = polyline
+                    }
+                    if let startLat = (json["start"]["lat"]).string {
+                        self.startLatitude = startLat
+                    }
+                    if let startLong = (json["start"]["long"]).string {
+                        self.startLongitude = startLong
+                    }
+                    if let endLat = (json["end"]["lat"]).string {
+                        self.endLatitude = endLat
+                    }
+                    if let endLong = (json["end"]["long"]).string {
+                        self.endLongitude = endLong
+                    }
+                
+                    self.directionsLabel.text = "got it!"
+            
+                    self.performSegueWithIdentifier("mapSegue", sender: sender)
+                }
+                
+                self.directionsButton.enabled = true
+
+                
         }
     
     }
