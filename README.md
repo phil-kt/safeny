@@ -11,4 +11,3 @@ What this app itself does is use iOS's location manager with Google Places to gu
 Here's some pics:
 
 ![Screen One](images/screen_one.png)
-![Screen Two](images/screen_two.jpeg)
