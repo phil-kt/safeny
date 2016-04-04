@@ -8,8 +8,7 @@ Safeny is an app that was submitted to [HackNY's Spring 2016 Student Hackathon](
 
 What this app itself does is use iOS's location manager with Google Places to guess your current location, and then allows you to select a location to where you're going, and queries the backend with those locations to try and figure out the safest route in NYC to get to your destination. The app then displays the map using the Google Maps iOS SDK and draws a polyfill from where you are to your destination, and displays your current position as the typical Google blue dot.
 
-
-
 Here's some pics:
+
 ![Screen One](images/screen_one.png)
 ![Screen Two](images/screen_two.jpeg)
